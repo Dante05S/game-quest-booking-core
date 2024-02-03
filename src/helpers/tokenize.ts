@@ -1,28 +1,20 @@
 import dayjs from 'dayjs'
-import { type TokenPayload } from '../interfaces/token_payload.interface'
+import { ServerError } from './exceptions-errors'
 import jwt from 'jsonwebtoken'
-import { ServerError } from './exceptions_errors'
+import {
+  type RolPayload,
+  type TokenPayload
+} from '../interfaces/token-payload.interface'
 
-export const createToken = (
-  userId: string,
-  type: 'access' | 'refresh' = 'access'
-): string => {
-  const exp =
-    type === 'access'
-      ? dayjs().add(5, 'hour').endOf('hour').unix()
-      : dayjs().add(2, 'month').endOf('month').unix()
+export const createToken = (id: string, type: RolPayload): string => {
+  const exp = dayjs().add(1, 'month').endOf('hour').unix()
 
   const payload: TokenPayload = {
-    user_id: userId,
-    pusher_channel: `USER_${userId}`,
+    id,
+    type,
+    pusher_channel: `${type}_${id}`,
     iat: dayjs().unix(),
     exp
-  }
-  if (type === 'refresh') {
-    if (process.env.REFRESH_TOKEN_SECRET_KEY === undefined) {
-      throw new ServerError('The token secret is required')
-    }
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY)
   }
 
   if (process.env.TOKEN_SECRET_KEY === undefined) {

@@ -1,4 +1,4 @@
-import { AppDataSource } from './data-source'
+import { AppDataSource } from './database/data-source'
 import express from 'express'
 import compression from 'compression'
 import cors from 'cors'

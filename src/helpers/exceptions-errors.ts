@@ -1,4 +1,4 @@
-import { ResponseCode, type ResponseObjectData } from '../helpers/request'
+import { ResponseCode, type ResponseObjectData } from './request'
 
 export class CustomError extends Error {
   data: ResponseObjectData | null
@@ -54,8 +54,9 @@ export class NotAuthorizedError extends CustomError {
 }
 
 export const getStatusByException = (e: unknown): ResponseCode => {
-  if (e instanceof CustomError) {
-    return e.status
+  console.log(e)
+  if ((e as CustomError).status !== undefined) {
+    return (e as CustomError).status
   }
   return ResponseCode.SERVER_ERROR
 }

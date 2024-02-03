@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   type FindOptionsWhere
 } from 'typeorm'
-import { NotFoundError } from '../helpers/exceptions_errors'
+import { NotFoundError } from '../helpers/exceptions-errors'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 
 export abstract class BaseAttributes {
@@ -34,9 +34,11 @@ export interface IService<T extends BaseAttributes> {
   remove: (id: string, message: string) => Promise<void>
 }
 
-export default class Service<T extends BaseAttributes> implements IService<T> {
-  protected repository: Repository<T>
-  constructor(repository: Repository<T>) {
+export default class Service<T extends BaseAttributes, R extends Repository<T>>
+  implements IService<T>
+{
+  protected repository: R
+  constructor(repository: R) {
     this.repository = repository
   }
 
