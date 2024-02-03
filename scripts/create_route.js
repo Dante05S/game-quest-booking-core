@@ -8,13 +8,13 @@ const PATH_REPOSITORIES = 'src/repositories'
 
 const toSnakeCase = (name) => {
   // Remove upper case characters for _
-  let formatName = name.replace(/([a-z])([A-Z])/g, '$1_$2')
+  let formatName = name.replace(/([a-z])([A-Z])/g, '$1-$2')
 
   // Remove - for _
-  formatName = formatName.replace(/-/g, '_').toLowerCase()
+  formatName = formatName.replace(/_/g, '-').toLowerCase()
 
   // Remove initial a final _
-  formatName = formatName.replace(/^_+|_+$/g, '')
+  formatName = formatName.replace(/^-+|-+$/g, '')
 
   // Remove accents, swap ñ for n, etc
   const from = 'ãàáäâáèéëêìíïîõòóöôùúüûñç'
@@ -190,12 +190,10 @@ const createServiceFile = (fileName, withRepository) => {
   const pascalCase = toPascalCase(fileName)
   const classService = `${pascalCase}Service`
 
-  const require = `'../repositories/${fileName}_repository'`
-
   const contructor =
     '  constructor() {' +
     '\n' +
-    `    super(AppDataSource.getRepository(${pascalCase}))` +
+    `    super(${pascalCase}Repository)` +
     '\n' +
     '  }' +
     '\n' +
@@ -204,9 +202,10 @@ const createServiceFile = (fileName, withRepository) => {
   const newFileService =
     "import Service, { type IService } from '.'" +
     '\n' +
-    "import { AppDataSource } from '../data-source'" +
+    `import { type ${pascalCase} } from '../database/entity/${pascalCase}'` +
     '\n' +
-    `import { ${pascalCase} } from '../entity/${pascalCase}'` +
+    `import { ${pascalCase}Repository } from '../repositories/${fileName}.repository'` +
+    '\n' +
     '\n' +
     `interface I${classService} extends IService<${pascalCase}> {` +
     '\n' +
@@ -215,7 +214,13 @@ const createServiceFile = (fileName, withRepository) => {
     '}' +
     '\n' +
     '\n' +
-    `class ${classService} extends Service<${pascalCase}> implements I${classService} {` +
+    `class ${classService}` +
+    '\n' +
+    `  extends Service<${pascalCase}, typeof ${pascalCase}Repository>` +
+    '\n' +
+    `  implements I${classService}` +
+    '\n' +
+    '{' +
     '\n' +
     contructor +
     '  public index(): { msg: string } {' +
@@ -233,6 +238,32 @@ const createServiceFile = (fileName, withRepository) => {
   fs.writeFile(
     `${PATH_SERVICES}/${fileName}.service.ts`,
     newFileService,
+    'utf8',
+    (error) => {
+      if (error) {
+        console.error('Error al escribir en el archivo:', error)
+      }
+    }
+  )
+}
+
+const createRepositoryFile = (fileName) => {
+  const pascalCase = toPascalCase(fileName)
+  const classRepository = `${pascalCase}Repository`
+
+  const newFileRepository =
+    "import { AppDataSource } from '../database/data-source'" +
+    '\n' +
+    `import { ${pascalCase} } from '../database/entity/${pascalCase}'` +
+    '\n' +
+    '\n' +
+    `export const ${classRepository} =` +
+    '\n' +
+    `  AppDataSource.getRepository(${pascalCase}).extend({})` +
+    '\n'
+  fs.writeFile(
+    `${PATH_REPOSITORIES}/${fileName}.repository.ts`,
+    newFileRepository,
     'utf8',
     (error) => {
       if (error) {
@@ -260,6 +291,7 @@ const main = () => {
     createRouteFile(fileName)
     createControllerFile(fileName)
     createServiceFile(fileName, param !== 'wr')
+    createRepositoryFile(fileName)
 
     console.log(
       `Route created successfully!!! The route's name is ${fileName.replace(

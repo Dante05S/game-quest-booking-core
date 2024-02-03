@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { type Request, type Response } from 'express'
-import { CustomError, getStatusByException } from '../helpers/exceptions_errors'
+import { CustomError, getStatusByException } from '../helpers/exceptions-errors'
 import { http, ResponseCode } from '../helpers/request'
 
 /* eslint-disable @typescript-eslint/ban-types */
