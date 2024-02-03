@@ -7,12 +7,15 @@ import { ResponseCode, error, http } from '../helpers/request'
 import { type NextFunction, type Request, type Response } from 'express'
 import { type TokenPayload } from '../interfaces/token-payload.interface'
 import { type CustomRequest } from '../interfaces/custom-request'
+import { UserRepository } from '../repositories/user.repository'
+import { AdminRepository } from '../repositories/admin.repository'
+import { NotAuthorizedError } from '../helpers/exceptions-errors'
 
-export const authenticate = (
+export const authenticate = async(
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
+): Promise<void> => {
   try {
     if (req.headers.authorization === undefined) {
       res
@@ -33,8 +36,23 @@ export const authenticate = (
       process.env.TOKEN_SECRET_KEY ?? ''
     ) as TokenPayload
 
+    let user = null
+    switch (payload.type) {
+      case 'USER':
+        user = await UserRepository.findOneBy({ id: payload.id })
+        break
+      case 'ADMIN':
+        user = await AdminRepository.findOneBy({ id: payload.id })
+        break
+    }
+
+    if (user === null) {
+      throw new NotAuthorizedError('Invalid Token')
+    }
+
     (req as unknown as CustomRequest).token = token;
-    (req as unknown as CustomRequest).user_id = payload.user_id
+    (req as unknown as CustomRequest).id = payload.id;
+    (req as unknown as CustomRequest).type = payload.type
 
     next()
   } catch (e) {
@@ -50,7 +68,7 @@ export const authenticate = (
     }
     res
       .status(ResponseCode.SERVER_ERROR)
-      .send(http.error({ type: 'server' }, ResponseCode.SERVER_ERROR, [(e as Error).message]))
+      .send(http.error(null, ResponseCode.SERVER_ERROR, [(e as Error).message]))
       
   }
 }
