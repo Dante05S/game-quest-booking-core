@@ -14,6 +14,9 @@ interface IEventController {
   uploadImage: (
     req: Request<{ id: string }, any, any>
   ) => Promise<ResponseController<Event>>
+  getById: (
+    req: Request<{ id: string }, any, any>
+  ) => Promise<ResponseController<Event>>
 }
 
 @Controller()
@@ -33,6 +36,15 @@ class EventController implements IEventController {
     }
 
     return [payload, 'Create event successfully']
+  }
+
+  public async getById(
+    req: Request<{ id: string }, any, any>
+  ): Promise<ResponseController<Event>> {
+    const id = req.params.id
+    const service = new EventService()
+    const event = await service.get(id, 'The event does not exist')
+    return [event, 'Get event successfully']
   }
 
   public async getAll(): Promise<ResponseController<Event[]>> {
