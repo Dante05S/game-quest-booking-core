@@ -6,6 +6,9 @@ import { checkRoles } from '../../middlewares/checkRoles'
 import { publicRoute } from '../../middlewares/publicRoute'
 import { validateBody } from '../../middlewares/validateBody'
 import { validateCreateSchema } from '../../validators/event.validator'
+import multipartFormDataParser from '../../middlewares/multiFormDataParser'
+import { validateFile } from '../../middlewares/validateFile'
+import { validateParam } from '../../middlewares/validateParam'
 
 const router = Router()
 
@@ -15,6 +18,15 @@ router.post(
   checkRoles(['ADMIN']),
   validateBody(validateCreateSchema()),
   eventController.create
+)
+router.put(
+  '/:id/upload-image',
+  authenticate,
+  checkRoles(['ADMIN']),
+  validateParam(),
+  multipartFormDataParser.single('file'),
+  validateFile,
+  eventController.uploadImage
 )
 router.get('/', publicRoute, eventController.getAll)
 

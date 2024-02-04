@@ -9,6 +9,9 @@ export class Event extends BaseAttributes {
   @Column({ nullable: false, type: 'text' })
   description!: string
 
+  @Column({ nullable: true, default: null })
+  image!: string
+
   @Column({
     nullable: false
   })
