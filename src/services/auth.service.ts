@@ -26,6 +26,7 @@ interface IAuthService extends IService<User> {
   login: (data: RequestCode) => Promise<UserResLogin>
   loginAdmin: (data: RequestCode) => Promise<UserResLogin>
   resendCode: (email: string) => Promise<null>
+  refresh: (id: string, token: string) => Promise<UserResValidateCode>
 }
 
 class AuthService
@@ -172,6 +173,22 @@ class AuthService
       user.id
     )
     return null
+  }
+
+  public async refresh(
+    id: string,
+    token: string
+  ): Promise<UserResValidateCode> {
+    const user = await this.get(id, 'The user does not exist')
+    return {
+      user: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email
+      },
+      token
+    }
   }
 }
 
