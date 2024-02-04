@@ -11,7 +11,8 @@ import { validateFile } from '../../middlewares/validateFile'
 import { validateParam } from '../../middlewares/validateParam'
 
 const router = Router()
-
+router.get('/', publicRoute, eventController.getAll)
+router.get('/:id', publicRoute, validateParam(), eventController.getById)
 router.post(
   '/',
   authenticate,
@@ -28,6 +29,5 @@ router.put(
   validateFile,
   eventController.uploadImage
 )
-router.get('/', publicRoute, eventController.getAll)
 
 export default router
