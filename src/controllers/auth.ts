@@ -10,6 +10,7 @@ import { type UserResLogin } from '../database/entity/User/dto/UserResLogin'
 import { type UserResRegister } from '../database/entity/User/dto/UserResRegister'
 import { type User } from '../database/entity/User'
 import { type Request } from 'express'
+import { type CustomRequest } from '../interfaces/custom-request'
 
 interface IAuthController {
   register: (
@@ -27,6 +28,9 @@ interface IAuthController {
   resendCode: (
     req: Request<ResponseObjectData, any, Pick<User, 'email'>>
   ) => Promise<ResponseController>
+  refresh: (
+    req: CustomRequest
+  ) => Promise<ResponseController<UserResValidateCode>>
 }
 
 @Controller()
@@ -74,6 +78,16 @@ class AuthController implements IAuthController {
     const authService = new AuthService()
     const request = await authService.resendCode(data.email)
     return [request, 'Resend verification code Successfully']
+  }
+
+  public async refresh(
+    req: CustomRequest
+  ): Promise<ResponseController<UserResValidateCode>> {
+    const id = req.id
+    const token = req.token
+    const authService = new AuthService()
+    const request = await authService.refresh(id, token)
+    return [request, 'Refresh session Successfully']
   }
 }
 

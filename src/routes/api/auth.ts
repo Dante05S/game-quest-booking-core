@@ -9,8 +9,11 @@ import {
   validateRequestCodeSchema,
   validateResendCodeSchema
 } from '../../validators/auth.validator'
+import { authenticate } from '../../middlewares/authenticate'
 
 const router = Router()
+
+router.get('/refresh', authenticate, authController.refresh)
 
 router.post(
   '/register',
