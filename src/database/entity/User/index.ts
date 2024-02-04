@@ -1,6 +1,7 @@
-import { Entity, Column, Unique, OneToOne } from 'typeorm'
+import { Entity, Column, Unique, OneToOne, OneToMany } from 'typeorm'
 import { CodeToken } from '../CodeToken'
 import { BaseAttributes } from '../../../services'
+import { Booking } from '../Booking'
 
 @Entity()
 @Unique(['email'])
@@ -22,4 +23,7 @@ export class User extends BaseAttributes {
 
   @OneToOne(() => CodeToken, (codeToken) => codeToken.user)
   code_token!: CodeToken
+
+  @OneToMany(() => Booking, (booking) => booking.user)
+  bookings!: Booking[]
 }
