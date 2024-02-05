@@ -89,5 +89,3 @@ Si tienes algun problema al momento de realizar uno de estos pasos, no dudes en 
 <img width="400" height="400" src="/public/3.png">
 <br/>
 <img width="400" height="400" src="/public/4.png">
-<br/>
-<img width="400" height="400" src="/public/5.png">
