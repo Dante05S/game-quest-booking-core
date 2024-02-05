@@ -82,12 +82,12 @@ Si tienes algun problema al momento de realizar uno de estos pasos, no dudes en 
 
 ## Pantallazos
 
-<img width="400" height="400" src="/public/1.png">
+<img width="1000" height="400" src="/public/1.png">
 <br/>
-<img width="400" height="400" src="/public/2.png">
+<img width="1000" height="400" src="/public/2.png">
 <br/>
-<img width="400" height="400" src="/public/3.png">
+<img width="1000" height="400" src="/public/3.png">
 <br/>
-<img width="400" height="400" src="/public/4.png">
+<img width="1000" height="400" src="/public/4.png">
 <br/>
-<img width="400" height="400" src="/public/5.png">
+<img width="1000" height="400" src="/public/5.png">
