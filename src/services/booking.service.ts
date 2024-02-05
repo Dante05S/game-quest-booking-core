@@ -29,8 +29,10 @@ class BookingService
       user_id: data.user_id,
       event_id: data.event_id
     })
-    if (booking !== null) {
+    if (booking !== null && booking.status !== BookingStatus.CANCEL) {
       throw new BadRequestError('Ya tienes reservado este evento')
+    } else if (booking !== null && booking.status === BookingStatus.CANCEL) {
+      throw new BadRequestError('Tienes este evento cancelado')
     }
   }
 
@@ -71,7 +73,8 @@ class BookingService
       'The event does not exist'
     )
     const booking = await this.repository.findOneBy({
-      event: { start_date: event.start_date }
+      event: { start_date: event.start_date },
+      user_id: data.user_id
     })
 
     if (booking !== null) {
@@ -100,7 +103,7 @@ class BookingService
     })
   }
 
-  public async cancel(id: string): Promise<ResBooking> {
+  public async cancel(id: string): Promise<Booking> {
     const booking = await this.update(
       id,
       { status: BookingStatus.CANCEL },
@@ -128,10 +131,8 @@ class BookingService
     await notify(pusherChannel, 'change-quota', pusherMessage)
 
     return {
-      id: booking.id,
-      user_id: booking.user_id,
-      event_id: booking.event_id,
-      status: booking.status
+      ...booking,
+      event: updateEvent
     }
   }
 }

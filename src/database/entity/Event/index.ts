@@ -1,6 +1,7 @@
 import { Entity, Column, OneToMany } from 'typeorm'
 import { BaseAttributes } from '../../../services'
 import { Booking } from '../Booking'
+import { Rate } from '../Rate'
 
 @Entity()
 export class Event extends BaseAttributes {
@@ -23,4 +24,7 @@ export class Event extends BaseAttributes {
 
   @OneToMany(() => Booking, (booking) => booking.event)
   bookings!: Booking[]
+
+  @OneToMany(() => Rate, (rate) => rate.event)
+  rates!: Rate[]
 }
