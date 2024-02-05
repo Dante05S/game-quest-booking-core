@@ -88,4 +88,4 @@ Si tienes algun problema al momento de realizar uno de estos pasos, no dudes en 
 <br/>
 <img width="1000" height="600" src="/public/3.png">
 <br/>
-<img width="400" height="600" src="/public/4.png">
+<img width="1000" height="600" src="/public/4.png">
