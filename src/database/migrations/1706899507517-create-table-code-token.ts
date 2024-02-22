@@ -26,7 +26,7 @@ export class CreateTableCodeToken1706899507517 implements MigrationInterface {
           {
             name: 'expire_at',
             type: 'timestamp',
-            isNullable: false,
+            isNullable: true,
             default: null
           },
           {
