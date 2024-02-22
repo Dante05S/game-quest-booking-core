@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node build/src/index.js",
+    "compile": "tsc",
+    "start": "node build/index.js",
     "local": "ts-node-dev src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -14,7 +14,7 @@
     "migration:generate": "npm run typeorm migration:create ./src/database/migrations/%npm_config_name%",
     "migration:run": "npm run typeorm migration:run -- -d ./src/database/data-source.ts",
     "migration:rollback": "npm run typeorm migration:revert -- -d ./src/database/data-source.ts",
-    "migration:run:prod": "npm run typeorm migration:run -- -d ./build/src/database/data-source.js"
+    "migration:run:prod": "npm run typeorm migration:run -- -d ./build/database/data-source.js"
   },
   "author": "",
   "license": "ISC",
