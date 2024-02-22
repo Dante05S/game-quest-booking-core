@@ -13,8 +13,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "npm run typeorm migration:create ./src/database/migrations/%npm_config_name%",
     "migration:run": "npm run typeorm migration:run -- -d ./src/database/data-source.ts",
-    "migration:rollback": "npm run typeorm migration:revert -- -d ./src/database/data-source.ts",
-    "migration:run:prod": "npm run typeorm migration:run -- -d ./build/database/data-source.js"
+    "migration:rollback": "npm run typeorm migration:revert -- -d ./src/database/data-source.ts"
   },
   "author": "",
   "license": "ISC",
