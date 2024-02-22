@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import config, { type ConfigEnv } from './config'
