@@ -26,7 +26,7 @@ export class CreateTableEvent1706934564164 implements MigrationInterface {
           {
             name: 'start_date',
             type: 'timestamp',
-            isNullable: false
+            isNullable: true
           },
           {
             name: 'available_quotas',
