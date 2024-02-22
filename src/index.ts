@@ -23,9 +23,6 @@ app.get('/', (_req, res) =>
   res.status(200).json({ message: 'Welcome to Game Quest Booking Core!' })
 )
 
-// Local environment
-if (process.env.ENV === 'local') {
-  app.listen(port, () => {
-    console.log(`Servidor escuchando en :${port}`)
-  })
-}
+app.listen(port, () => {
+  console.log(`Servidor escuchando en :${port}`)
+})
