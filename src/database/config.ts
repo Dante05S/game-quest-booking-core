@@ -19,7 +19,7 @@ const config: ConfigDataBase = {
     synchronize: false,
     logging: false,
     entities: ['database/entity/**/*.js'],
-    migrations: ['src/database/migrations/*{.ts,.js}'],
+    migrations: ['database/migrations/*{.ts,.js}'],
     subscribers: []
   },
   local: {
